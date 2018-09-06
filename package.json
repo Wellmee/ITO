@@ -1,0 +1,26 @@
+{
+  "name": "wellmee-ito",
+  "version": "0.0.1",
+  "description": "Wellmee ITO",
+  "main": "index.js",
+  "dependencies": {
+    "npm": "^6.4.1",
+    "pryjs": "^1.0.3",
+    "request": "^2.88.0",
+    "stellar-sdk": "^0.10.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wellmee/ITO.git"
+  },
+  "author": "Petr Cvengros",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Wellmee/ITO/issues"
+  },
+  "homepage": "https://github.com/Wellmee/ITO#readme"
+}
