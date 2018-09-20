@@ -4,7 +4,7 @@ var fs = require('fs');
 
 
 // load account
-var keys = JSON.parse(fs.readFileSync('./test-accounts/account.json', 'utf8'));
+var keys = JSON.parse(fs.readFileSync('./test-accounts/account2.json', 'utf8'));
 
 // pry = require('pryjs'); eval(pry.it);
 
@@ -16,11 +16,13 @@ var pair = StellarSdk.Keypair.fromSecret(keys.secretKey);
 
 // get account balances:
 var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
+// var publicKey = pair.publicKey();
+var publicKey = 'GA6NEPSN5CPEBXEKRYIYUNXTT3KI7FOGJAXSUOBK53577TTIFR7VSHVV';
 
 // the JS SDK uses promises for most actions, such as retrieving an account
-server.loadAccount(pair.publicKey()).then(
+server.loadAccount(publicKey).then(
   function(account) {
-    console.log('Balances for account: ' + pair.publicKey());
+    console.log('Balances for account: ' + publicKey);
     account.balances.forEach(
       function(balance) {
         console.log('Type:', balance.asset_type, ', Balance:', balance.balance);

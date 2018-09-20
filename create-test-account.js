@@ -1,6 +1,7 @@
 
 var StellarSdk = require('stellar-sdk');
 
+var accountName = process.argv[2] ? process.argv[2] : 'account';
 // create a completely new and unique pair of keys
 // see more about KeyPair objects: https://stellar.github.io/js-stellar-sdk/Keypair.html
 var pair = StellarSdk.Keypair.random();
@@ -29,4 +30,4 @@ var account = {
   secretKey: pair.secret()
 }
 var fs = require('fs');
-fs.writeFileSync('./test-accounts/account2.json', JSON.stringify(account, null, 2) , 'utf-8');
+fs.writeFileSync(`./test-accounts/${accountName}.json`, JSON.stringify(account, null, 2) , 'utf-8');

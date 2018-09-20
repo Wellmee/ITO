@@ -1,2 +1,5 @@
 node_modules
 test-accounts
+config.json
+ledger.js
+config

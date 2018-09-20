@@ -59,6 +59,8 @@ The following steps will be done in batches, e.g. after a day of verifying:
  * Someone sends funds in multiple transactions (same public address)
  * Someone submits the KYC form multiple times, with different email
  * Someone transfers the interim tokens to a different address - sending the final tokens to the address they bought it from, freezing all interim tokens no matter where they are. 
+ * Someone creates a sell offer with price lower than ours
+ * Someone buys and fails the KYC - you just lost interim tokens they bought - need a reserve 
 
 
 
