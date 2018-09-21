@@ -52,8 +52,8 @@ ito.loadStuff = async function() {
 ito.sign = async function(transaction, signingAccounts) {
   // TODO: better filename 
   // write the xdr to a file
-  let xdr = transaction.toEnvelope().toXDR().toString('base64');
-  fs.writeFileSync(`./transactions/unsigned.json`, xdr, 'utf-8');
+  ito.transactionToFile(transaction, `./transactions/unsigned.json`);
+
   // sign with each account
   // file:
   for (var i = 0; i < signingAccounts.length; i++) {
@@ -61,8 +61,7 @@ ito.sign = async function(transaction, signingAccounts) {
   }
 
   // write signed xdr to a file
-  xdr = transaction.toEnvelope().toXDR().toString('base64');
-  fs.writeFileSync(`./transactions/signed.json`, xdr , 'utf-8');
+  ito.transactionToFile(transaction, `./transactions/signed.json`);
 
 }
 
@@ -70,6 +69,11 @@ ito.transactionFromFile = function(fileName) {
   // read transaction from file  
   let xdr = fs.readFileSync(fileName, 'utf8');
   return new StellarSdk.Transaction(xdr);
+}
+
+ito.transactionToFile = function(transaction, fileName) {
+  let xdr = transaction.toEnvelope().toXDR().toString('base64');
+  fs.writeFileSync(fileName, xdr , 'utf-8');
 }
 
 ito.logError = function(error) {
