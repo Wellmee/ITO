@@ -17,7 +17,7 @@ var pair = StellarSdk.Keypair.fromSecret(keys.secretKey);
 // get account balances:
 var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 // var publicKey = pair.publicKey();
-var publicKey = 'GA6NEPSN5CPEBXEKRYIYUNXTT3KI7FOGJAXSUOBK53577TTIFR7VSHVV';
+var publicKey = 'GCKHQ3VDAKIZKXTFMJCNPBFNI3Y7WYYTVUQASDRPWLI4I6AGGXXM7R4D';
 
 // the JS SDK uses promises for most actions, such as retrieving an account
 server.loadAccount(publicKey).then(

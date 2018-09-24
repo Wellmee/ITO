@@ -1,12 +1,4 @@
-// - load account (or more), from file or ledger, from server
-// - build transaction -> file
-// - sign transaction -> file
-// - submit transaction
-
-// // globalni config:
-// network: test/public
-
-const Ito = require('./src/ito.js');
+const Ito = require('../src/ito.js');
 const StellarSdk = require('stellar-sdk');
 
 var transaction;
@@ -15,12 +7,19 @@ var transaction;
 Ito.loadStuff().then(function() {
   // build the transaction
   transaction = new StellarSdk.TransactionBuilder(Ito.accounts.issuing.loaded)
-    .addOperation(StellarSdk.Operation.payment({
-      destination: Ito.accounts.distributing.loaded.accountId(),
-      asset: StellarSdk.Asset.native(),
-      amount: "10"
+    .addOperation(StellarSdk.Operation.setOptions({
+      signer: {
+        ed25519PublicKey: Ito.accounts.issuingSigner.publicKey,
+        weight: 1
+      }
     }))
-    .addMemo(StellarSdk.Memo.text('sending stuff'))
+    .addOperation(StellarSdk.Operation.setOptions({
+      masterWeight: 1,
+      lowThreshold: 2, // 1??? - if 1, allow trust needs just one
+      medThreshold: 2,
+      highThreshold: 2
+    }))
+    .addMemo(StellarSdk.Memo.text('setting multisig'))
     .build();
 
   // sign it
@@ -37,4 +36,3 @@ Ito.loadStuff().then(function() {
 .catch(function(error) {
   Ito.logError(error);
 });
-

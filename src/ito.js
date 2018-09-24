@@ -84,7 +84,7 @@ ito.sign = async function(transaction, signingAccounts) {
   let fileId = transaction.source.substr(0,5);
 
   // write the xdr to a file
-  ito.transactionToFile(transaction, `./transactions/${fileId}-unsigned.txt`);
+  ito.transactionToFile(transaction, `./transactions/${fileId}-unsigned.xdr`);
 
   // sign with each account
   for (var i = 0; i < signingAccounts.length; i++) {
