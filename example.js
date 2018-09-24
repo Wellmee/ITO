@@ -13,11 +13,10 @@ var transaction;
 
 // load what's needed
 Ito.loadStuff().then(function() {
-// pry = require('pryjs'); eval(pry.it);
   // build the transaction
-  transaction = new StellarSdk.TransactionBuilder(Ito.accounts.issuing)
+  transaction = new StellarSdk.TransactionBuilder(Ito.accounts.issuing.loaded)
     .addOperation(StellarSdk.Operation.payment({
-      destination: Ito.accounts.distributing.accountId(),
+      destination: Ito.accounts.distributing.loaded.accountId(),
       asset: StellarSdk.Asset.native(),
       amount: "10"
     }))
@@ -25,7 +24,7 @@ Ito.loadStuff().then(function() {
     .build();
 
   // sign it
-  return Ito.sign(transaction, [Ito.keypairs.issuing, Ito.keypairs.distributing]);
+  return Ito.sign(transaction, Ito.accounts.issuing);
 })
 .then(function() {
 

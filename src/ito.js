@@ -1,11 +1,21 @@
 /**
+ * environment variables:
+ * ITO_CONFIG .. name of the config file 
+ * 
+ * methods:
  * async loadStuff(): load whatever is needed from config
  * async sign(transaction, list of signing accounts)
  * logSuccess(result)
  * logError(error)
  * 
  * after loadStuff, there's:
- * server
+ * ito.server
+ * ito.accounts.<name> that has:
+ *  accountType: file/ledger
+ *  accountName: from config
+ *  publicKey
+ *  keypair: just for accountType file
+ *  
  */
 
 const ito = {};
@@ -37,32 +47,60 @@ ito.loadStuff = async function() {
     if (!c.accounts.hasOwnProperty(a)) continue;
 
     // get the account from the file / ledger
-    let accountFile = `./test-accounts/${ito.c.accounts[a]}.json`;
-    ito.c.accounts[a] = JSON.parse(fs.readFileSync(accountFile, 'utf8'));
+    if (ito.c.accounts[a].startsWith('ledger')) {
+      // ledger
+      // get the account number
+      let accNum = Number(ito.c.accounts[a].split('-').slice(-1)[0]);
 
-    // create a keypair (from file only)
-    ito.keypairs[a] = StellarSdk.Keypair.fromSecret(ito.c.accounts[a].secretKey);
+      // connect
+      await ledgerWallet.connect(accNum);
+
+      ito.accounts[a] = {
+        accountType: 'ledger',
+        accountName: a,
+        publicKey: ledgerWallet.publicKey
+      }
+    } else {   
+      // file - take stuff from the config and add a few things
+      let accountFile = `./test-accounts/${ito.c.accounts[a]}.json`;
+      ito.accounts[a] = JSON.parse(fs.readFileSync(accountFile, 'utf8'));
+      Object.assign(ito.accounts[a], {
+        accountType: 'file',
+        accountName: a,
+        keypair: StellarSdk.Keypair.fromSecret(ito.accounts[a].secretKey)
+      });
+    }
 
     // load it
-    ito.accounts[a] = await ito.server.loadAccount(ito.c.accounts[a].publicKey);
+    ito.accounts[a].loaded = await ito.server.loadAccount(ito.accounts[a].publicKey);
 
   };
 }
 
 ito.sign = async function(transaction, signingAccounts) {
-  // TODO: better filename 
+  if (! Array.isArray(signingAccounts)){
+    signingAccounts = [signingAccounts];
+  }
+  let fileId = transaction.source.substr(0,5);
+
   // write the xdr to a file
-  ito.transactionToFile(transaction, `./transactions/unsigned.json`);
+  ito.transactionToFile(transaction, `./transactions/${fileId}-unsigned.txt`);
 
   // sign with each account
-  // file:
   for (var i = 0; i < signingAccounts.length; i++) {
-    transaction.sign(signingAccounts[i]);
+    let a = signingAccounts[i];
+
+    if (a.accountType == 'file'){
+      // file: sign wih keypair
+      transaction.sign(a.keypair);
+    } else {
+      // ledger
+      console.log('Use ledger to sign the transaction');
+      await ledgerWallet.sign(transaction);
+    }
+    // write signed xdr to a file
+    ito.transactionToFile(transaction, `./transactions/${fileId}-${a.accountName}-signed.txt`);
   }
-
-  // write signed xdr to a file
-  ito.transactionToFile(transaction, `./transactions/signed.json`);
-
 }
 
 ito.transactionFromFile = function(fileName) {
