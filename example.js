@@ -30,7 +30,7 @@ m.signers = ['issuing', 'issuingSigner'];
 
 // if called directly, do it
 if (require.main === module) {
-  Ito.completeTransaction(buildTransaction, m.signers);
+  Ito.completeTransaction(m.buildTransaction, m.signers);
 }
 
 module.exports = m;
