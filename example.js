@@ -9,12 +9,13 @@
 const Ito = require('./src/ito.js');
 const StellarSdk = require('stellar-sdk');
 
-var transaction;
+const m = {};
 
-// load what's needed
-Ito.loadStuff().then(function() {
-  // build the transaction
-  transaction = new StellarSdk.TransactionBuilder(Ito.accounts.issuing.loaded)
+// pry = require('pryjs'); eval(pry.it);
+
+// payment transaction
+m.buildTransaction = function (){
+  return new StellarSdk.TransactionBuilder(Ito.accounts.issuing.loaded)
     .addOperation(StellarSdk.Operation.payment({
       destination: Ito.accounts.distributing.loaded.accountId(),
       asset: StellarSdk.Asset.native(),
@@ -22,19 +23,14 @@ Ito.loadStuff().then(function() {
     }))
     .addMemo(StellarSdk.Memo.text('sending stuff'))
     .build();
+}
 
-  // sign it
-  return Ito.sign(transaction, Ito.accounts.issuing);
-})
-.then(function() {
+// signers of the transaction
+m.signers = ['issuing', 'issuingSigner'];
 
-  // And finally, send it off to Stellar!
-  return Ito.server.submitTransaction(transaction);
-})  
-.then(function(result) {
-  Ito.logSuccess(result);
-})
-.catch(function(error) {
-  Ito.logError(error);
-});
+// if called directly, do it
+if (require.main === module) {
+  Ito.completeTransaction(buildTransaction, m.signers);
+}
 
+module.exports = m;

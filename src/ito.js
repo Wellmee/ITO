@@ -4,7 +4,7 @@
  * 
  * methods:
  * async loadStuff(): load whatever is needed from config
- * async sign(transaction, list of signing accounts)
+ * async sign(transaction, list of signing accounts) must be called after loadStuff() is finished
  * logSuccess(result)
  * logError(error)
  * 
@@ -28,6 +28,30 @@ const ledgerWallet = require('stellar-ledger-wallet');
 /**
  * Methods
  */
+
+ito.completeTransaction = function(buildTransaction, signers){
+  var transaction;
+
+  // load what's needed
+  ito.loadStuff().then(function() {
+    // build the transaction
+    transaction = buildTransaction();
+
+    // sign it
+    return ito.sign(transaction, signers);
+  })
+  .then(function() {
+
+    // And finally, send it off to Stellar!
+    return ito.server.submitTransaction(transaction);
+  })  
+  .then(function(result) {
+    ito.logSuccess(result);
+  })
+  .catch(function(error) {
+    ito.logError(error);
+  });
+}
 
 ito.loadStuff = async function() {
   // config file
@@ -89,9 +113,12 @@ ito.sign = async function(transaction, signingAccounts) {
   // sign with each account
   for (var i = 0; i < signingAccounts.length; i++) {
     let a = signingAccounts[i];
+    if (typeof a === 'string' || a instanceof String){
+      a = ito.accounts[a]
+    }
 
     if (a.accountType == 'file'){
-      // file: sign wih keypair
+      // file: sign wih keypair      
       transaction.sign(a.keypair);
     } else {
       // ledger
@@ -99,7 +126,7 @@ ito.sign = async function(transaction, signingAccounts) {
       await ledgerWallet.sign(transaction);
     }
     // write signed xdr to a file
-    ito.transactionToFile(transaction, `./transactions/${fileId}-${a.accountName}-signed.txt`);
+    ito.transactionToFile(transaction, `./transactions/${fileId}-${a.accountName}-signed.xdr`);
   }
 }
 
@@ -116,6 +143,7 @@ ito.transactionToFile = function(transaction, fileName) {
 
 ito.logError = function(error) {
   console.error('Something went wrong!', error);
+  console.error('Error code (hopefully): ', error.response.data.extras)
 }
 
 ito.logSuccess = function(result) {

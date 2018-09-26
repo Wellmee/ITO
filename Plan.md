@@ -11,6 +11,8 @@
  * Implement listing payments, paying from an account
 
 ## Done
+  * template function, nejaky buildTransaction(account) vrati transakci
+  * budes volat wholeThing(fce, signers)
  * framework
  * Try it out, buy stuff with test account
  * signing with Ledger 
