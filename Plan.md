@@ -1,16 +1,17 @@
 ## Plan
- * Multisig setup + test immediately - tricky
- * look at account details
+ * trustline + create token
+ * Implement listing payments, paying from an account
+ * try something on public network
  * ledger public key to file, so that I don't have to connect ledger everytime
+ * Implement "Before ITO", with single signature, on testnet
+ * The rest
+
+## Done
  * multisig lifecycle:
   * create transaction, sign, write to file
   * take from file, sign, submit
- * Implement "Before ITO", with single signature, on testnet
- * try something on public network
- * The rest
- * Implement listing payments, paying from an account
-
-## Done
+ * Multisig setup + test immediately - tricky
+ * look at account details
   * template function, nejaky buildTransaction(account) vrati transakci
   * budes volat wholeThing(fce, signers)
  * framework

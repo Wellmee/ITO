@@ -53,6 +53,53 @@ ito.completeTransaction = function(buildTransaction, signers){
   });
 }
 
+ito.signToFile = function(buildTransaction, signers, name){
+  var transaction;
+  var fileName = `transactions-to-sign/${name}.xdr`
+  // load what's needed
+  ito.loadStuff().then(function() {
+    // build the transaction
+    transaction = buildTransaction();
+
+    // sign it
+    return ito.sign(transaction, signers);
+  })
+  .then(function() {
+    // write it to a file
+    ito.transactionToFile(transaction, fileName);
+    return; 
+  })  
+  .then(function(result) {
+    ito.logSuccess(`written to ${fileName}`);
+  })
+  .catch(function(error) {
+    ito.logError(error);
+  });
+}
+
+ito.signAndSubmit = function(fileName, signers){
+  var transaction;
+
+  ito.loadStuff().then(function() {
+    
+    // get the transaction from file
+    transaction = ito.transactionFromFile(fileName);
+
+    // sign it
+    return ito.sign(transaction, signers);
+  })
+  .then(function() {
+    // And finally, send it off to Stellar!
+    return ito.server.submitTransaction(transaction);
+  })  
+  .then(function(result) {
+    ito.logSuccess(result);
+  })
+  .catch(function(error) {
+    ito.logError(error);
+  });
+}
+
 ito.loadStuff = async function() {
   // config file
   const configFile = process.env.ITO_CONFIG ? `./config/${process.env.ITO_CONFIG}.json` : './config/config.json'
