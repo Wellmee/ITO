@@ -190,7 +190,9 @@ ito.transactionToFile = function(transaction, fileName) {
 
 ito.logError = function(error) {
   console.error('Something went wrong!', error);
-  console.error('Error code (hopefully): ', error.response.data.extras)
+  if (error.response.data && error.response.data.extras){
+    console.error('Error code (hopefully): ', error.response.data.extras)
+  }
 }
 
 ito.logSuccess = function(result) {

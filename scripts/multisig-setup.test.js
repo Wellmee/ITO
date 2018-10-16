@@ -6,12 +6,18 @@ let multi = {
 }
 
 test('issuing and distributing accounts have multisig set up', function() {
-  Ito.loadStuff().then(function() {
-    var iss = Ito.accounts.issuing.loaded;
+  // return the promise, expect 6 expects
+  expect.assertions(6);
+  return Ito.loadStuff().then(function() {
+    let iss = Ito.accounts.issuingInterim.loaded;
     expect(iss).toMatchObject(multi);
     expect(iss.signers).toHaveLength(2);
 
-    var dis = Ito.accounts.distributing.loaded;
+    let iss2 = Ito.accounts.issuingFinal.loaded;
+    expect(iss2).toMatchObject(multi);
+    expect(iss2.signers).toHaveLength(2);
+
+    let dis = Ito.accounts.distributing.loaded;
     expect(dis).toMatchObject(multi);
     expect(dis.signers).toHaveLength(2);
   })

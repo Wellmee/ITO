@@ -1,3 +1,4 @@
+// setup multisig for distributing account
 const Ito = require('../src/ito.js');
 const StellarSdk = require('stellar-sdk');
 

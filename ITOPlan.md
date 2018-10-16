@@ -8,7 +8,6 @@
 ## Before ITO
  * Create DA
  * Create IIA, [Authorization revocable](https://www.stellar.org/developers/guides/concepts/accounts.html#flags)
- * Create IFA, Authorization immutable
  * Add trustline from DA to IIA
  * Pay interim tokens from IIA to DA - set asset params
  * Create and host the [toml file](https://www.stellar.org/developers/guides/concepts/stellar-toml.html) for interim tokens
@@ -36,6 +35,7 @@ The following steps will be done in batches, e.g. after a day of verifying:
  * get fresh re-KYC transactions, join them to KYC data on public key, see if the Wellmee keys match. If yes, make them verified and send a confirmation email
 
 ### Final Token Distribution
+ * Create IFA, Authorization immutable
  * Create and host the toml file for final tokens
  * Add trustline from DA to IFA
  * Pay final tokens from IFA to DA
@@ -53,7 +53,7 @@ The following steps will be done in batches, e.g. after a day of verifying:
 
 ## At the end, success or not
  * Using IIA, freeze interim tokens, for all trustlines on the interim token, set authorized to false
- * freeze IIA
+ * freeze IIA 
 
 ## Edge Cases
  * Someone sends funds in multiple transactions (same public address)

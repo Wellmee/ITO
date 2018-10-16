@@ -1,10 +1,11 @@
 ## Plan
- * trustline + create token
- * Implement listing payments, paying from an account
  * try something on public network
+ * create token + trustline 
+ * Implement listing payments, paying from an account
  * ledger public key to file, so that I don't have to connect ledger everytime
  * Implement "Before ITO", with single signature, on testnet
  * The rest
+ * toml file a nechat si ho vystavit na webu
 
 ## Done
  * multisig lifecycle:
