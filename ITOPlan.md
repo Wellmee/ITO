@@ -9,7 +9,7 @@
  * Create DA
  * Create IIA, [Authorization revocable](https://www.stellar.org/developers/guides/concepts/accounts.html#flags)
  * Add trustline from DA to IIA
- * Pay interim tokens from IIA to DA - set asset params
+ * Pay interim tokens from IIA to DA
  * Create and host the [toml file](https://www.stellar.org/developers/guides/concepts/stellar-toml.html) for interim tokens
  * DA creates sell offers, one for discount, one for the rest, valid through the respective ITO periods
 

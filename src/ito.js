@@ -29,16 +29,16 @@ const ledgerWallet = require('stellar-ledger-wallet');
  * Methods
  */
 
-ito.completeTransaction = function(buildTransaction, signers){
+ito.completeTransaction = function(buildTransaction, signer){
   var transaction;
 
   // load what's needed
-  ito.loadStuff().then(function() {
+  ito.loadStuff(signer).then(function() {
     // build the transaction
     transaction = buildTransaction();
 
     // sign it
-    return ito.sign(transaction, signers);
+    return ito.sign(transaction, signer);
   })
   .then(function() {
 
@@ -53,16 +53,16 @@ ito.completeTransaction = function(buildTransaction, signers){
   });
 }
 
-ito.signToFile = function(buildTransaction, signers, name){
+ito.signToFile = function(buildTransaction, signer, name){
   var transaction;
   var fileName = `transactions-to-sign/${name}.xdr`
   // load what's needed
-  ito.loadStuff().then(function() {
+  ito.loadStuff(signer).then(function() {
     // build the transaction
     transaction = buildTransaction();
 
     // sign it
-    return ito.sign(transaction, signers);
+    return ito.sign(transaction, signer);
   })
   .then(function() {
     // write it to a file
@@ -77,16 +77,16 @@ ito.signToFile = function(buildTransaction, signers, name){
   });
 }
 
-ito.signAndSubmit = function(fileName, signers){
+ito.signAndSubmit = function(fileName, signer){
   var transaction;
 
-  ito.loadStuff().then(function() {
+  ito.loadStuff(signer).then(function() {
     
     // get the transaction from file
     transaction = ito.transactionFromFile(fileName);
 
     // sign it
-    return ito.sign(transaction, signers);
+    return ito.sign(transaction, signer);
   })
   .then(function() {
     // And finally, send it off to Stellar!
@@ -100,10 +100,12 @@ ito.signAndSubmit = function(fileName, signers){
   });
 }
 
-ito.loadStuff = async function() {
+ito.loadStuff = async function(accountToLoad) {
   // config file
   const configFile = process.env.ITO_CONFIG ? `./config/${process.env.ITO_CONFIG}.json` : './config/config.json'
   const c = JSON.parse(fs.readFileSync(configFile, 'utf8'));
+  const ledgerPublicKeys = JSON.parse(fs.readFileSync('./config/ledger-public-keys.json', 'utf8'));
+  
   ito.c = c;
 
   // network
@@ -119,17 +121,26 @@ ito.loadStuff = async function() {
 
     // get the account from the file / ledger
     if (ito.c.accounts[a].startsWith('ledger')) {
-      // ledger
-      // get the account number
-      let accNum = Number(ito.c.accounts[a].split('-').slice(-1)[0]);
+      let publicKey;
 
-      // connect
-      await ledgerWallet.connect(accNum);
+      // if it should be loaded
+      if (a == accountToLoad) {
+        // ledger
+        // get the account number
+        let accNum = Number(ito.c.accounts[a].split('-').slice(-1)[0]);
+
+        // connect
+        await ledgerWallet.connect(accNum);
+        publicKey = ledgerWallet.publicKey;
+      } else {
+        // just get the publicKey from the file
+        publicKey = ledgerPublicKeys[ito.c.accounts[a]];
+      }
 
       ito.accounts[a] = {
         accountType: 'ledger',
         accountName: a,
-        publicKey: ledgerWallet.publicKey
+        publicKey: publicKey
       }
     } else {   
       // file - take stuff from the config and add a few things
@@ -197,6 +208,7 @@ ito.logError = function(error) {
 
 ito.logSuccess = function(result) {
   console.log('Success! Results:', result);
+  console.log('If hanging, quit the stellar app on your ledger');
 }
 
 

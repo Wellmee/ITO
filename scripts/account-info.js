@@ -1,7 +1,11 @@
 const Ito = require('../src/ito.js');
 
-Ito.loadStuff().then(function() {
-  var iss = Ito.accounts.issuing.loaded;
+var accountName = process.argv[2] ? process.argv[2] : 'account';
 
-pry = require('pryjs'); eval(pry.it);
+Ito.loadStuff().then(function() {
+  var iss = Ito.accounts[accountName].loaded;
+// pry = require('pryjs'); eval(pry.it);
+
+  console.log(iss);
+
 })
