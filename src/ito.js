@@ -109,8 +109,10 @@ ito.loadStuff = async function(accountToLoad) {
   ito.c = c;
 
   // network
+  
   StellarSdk.Network[c.network.usemethod]();
-  ito.server = new StellarSdk.Server(c.network.networkPassphrase);
+// pry = require('pryjs'); eval(pry.it);
+  ito.server = new StellarSdk.Server(c.network.serverURL);
 
   // accounts and keypairs
   ito.accounts = {}

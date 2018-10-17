@@ -10,7 +10,7 @@ m.buildTransaction = function(){
     .addOperation(StellarSdk.Operation.payment({
       destination: Ito.accounts.distributing.loaded.accountId(),
       asset: StellarSdk.Asset.native(),
-      amount: "10"
+      amount: "1"
     }))
     .addMemo(StellarSdk.Memo.text('Test Transaction'))
     .build();

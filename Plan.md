@@ -1,13 +1,17 @@
 ## Plan
+ * hanging
+ * support second device
  * try something on public network
- * create token + trustline 
+ * sell offer
  * Implement listing payments, paying from an account
- * ledger public key to file, so that I don't have to connect ledger everytime
- * Implement "Before ITO", with single signature, on testnet
- * The rest
  * toml file a nechat si ho vystavit na webu
+ * try 100 operations
 
 ## Done
+ * ledger public key to file, so that I don't have to connect ledger everytime
+ * The rest
+ * Implement "Before ITO", with single signature, on testnet
+ * create token + trustline 
  * multisig lifecycle:
   * create transaction, sign, write to file
   * take from file, sign, submit
