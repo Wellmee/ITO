@@ -1,10 +1,12 @@
 ## Plan
- * sell offer
- * toml file a nechat si ho vystavit na webu
- * Implement listing payments, paying from an account
+ * toml file and hosting
+ * time bounds + just sign with no submit
+ * testovaci buyer that buys a few tokens
+ * Implement listing payments, paying from an account - more like trades for an offer: https://www.stellar.org/developers/horizon/reference/endpoints/trades-for-offer.html
  * try 100 operations
 
 ## Done
+ * sell offer
  * support second device
  * try something on public network
  * hanging

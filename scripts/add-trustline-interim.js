@@ -4,12 +4,11 @@ const StellarSdk = require('stellar-sdk');
 
 const m = {};
 
-// change signers and weights
 m.buildTransaction = function(){
   return new StellarSdk.TransactionBuilder(Ito.accounts.distributing.loaded)
     .addOperation(StellarSdk.Operation.changeTrust({
       asset: new StellarSdk.Asset(Ito.c.interimToken.code, Ito.accounts.issuingInterim.loaded.accountId()),
-      limit: (Ito.c.interimToken.supply * 1.05).toString()
+      limit: (Number(Ito.c.interimToken.supply) * 1.05).toString()
     }))
     .addMemo(StellarSdk.Memo.text('adding trustline'))
     .build();

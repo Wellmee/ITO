@@ -39,3 +39,9 @@ node scripts/send-interim-tokens.js
 node scripts/sign-and-submit.js transactions-to-sign/sending-interim-tokens.xdr issuingInterimSigner
 - test:
 jest scripts/send-interim-tokens.test.js
+5. Sell offer
+node scripts/sell-offer-interim.js 
+- sign:
+node scripts/sign-and-submit.js transactions-to-sign/sell-offer.xdr distributingSigner
+- test:
+jest scripts/sell-offer-interim.test.js 

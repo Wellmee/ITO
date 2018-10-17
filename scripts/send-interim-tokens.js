@@ -10,7 +10,7 @@ m.buildTransaction = function(){
     .addOperation(StellarSdk.Operation.payment({
       destination: Ito.accounts.distributing.loaded.accountId(),
       asset: new StellarSdk.Asset(Ito.c.interimToken.code, Ito.accounts.issuingInterim.loaded.accountId()),
-      amount: Ito.c.interimToken.supply.toString()
+      amount: Ito.c.interimToken.supply
     }))
     .addMemo(StellarSdk.Memo.text('sending interim tokens'))
     .build();
