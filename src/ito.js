@@ -24,6 +24,7 @@ const StellarSdk = require('stellar-sdk');
 const fs = require('fs');
 const ledgerWallet = require('stellar-ledger-wallet');
 
+ito.hasLedger = false;
 
 /**
  * Methods
@@ -109,9 +110,7 @@ ito.loadStuff = async function(accountToLoad) {
   ito.c = c;
 
   // network
-  
   StellarSdk.Network[c.network.usemethod]();
-// pry = require('pryjs'); eval(pry.it);
   ito.server = new StellarSdk.Server(c.network.serverURL);
 
   // accounts and keypairs
@@ -128,6 +127,7 @@ ito.loadStuff = async function(accountToLoad) {
       // if it should be loaded
       if (a == accountToLoad) {
         // ledger
+        ito.hasLedger = true;
         // get the account number
         let accNum = Number(ito.c.accounts[a].split('-').slice(-1)[0]);
 
@@ -210,7 +210,9 @@ ito.logError = function(error) {
 
 ito.logSuccess = function(result) {
   console.log('Success! Results:', result);
-  console.log('If hanging, quit the stellar app on your ledger');
+  if (ito.hasLedger){
+    console.log('Now, quit the Stellar app on your ledger...');
+  }
 }
 
 
