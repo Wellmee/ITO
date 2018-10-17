@@ -1,13 +1,13 @@
 ## Plan
- * hanging
- * support second device
- * try something on public network
  * sell offer
- * Implement listing payments, paying from an account
  * toml file a nechat si ho vystavit na webu
+ * Implement listing payments, paying from an account
  * try 100 operations
 
 ## Done
+ * support second device
+ * try something on public network
+ * hanging
  * ledger public key to file, so that I don't have to connect ledger everytime
  * The rest
  * Implement "Before ITO", with single signature, on testnet

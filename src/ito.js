@@ -121,15 +121,20 @@ ito.loadStuff = async function(accountToLoad) {
     if (!c.accounts.hasOwnProperty(a)) continue;
 
     // get the account from the file / ledger
-    if (ito.c.accounts[a].startsWith('ledger')) {
+    if (ito.c.accounts[a].includes('ledger')) {
       let publicKey;
 
       // if it should be loaded
       if (a == accountToLoad) {
         // ledger
         ito.hasLedger = true;
-        // get the account number
-        let accNum = Number(ito.c.accounts[a].split('-').slice(-1)[0]);
+
+        // get the account number and name
+        let partsList = ito.c.accounts[a].split('-');
+        let accNum = Number(partsList.slice(-1)[0]);
+        let deviceName = `${partsList[0]}-${partsList[1]}`;
+
+        console.log(`Connect the device: ${deviceName}`);
 
         // connect
         await ledgerWallet.connect(accNum);
@@ -203,7 +208,7 @@ ito.transactionToFile = function(transaction, fileName) {
 
 ito.logError = function(error) {
   console.error('Something went wrong!', error);
-  if (error.response.data && error.response.data.extras){
+  if (error.response && error.response.data && error.response.data.extras){
     console.error('Error code (hopefully): ', error.response.data.extras)
   }
 }
