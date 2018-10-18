@@ -10,7 +10,7 @@ test('issuing and distributing accounts have multisig set up', function() {
   expect.assertions(6);
   return Ito.loadStuff().then(function() {
     if (Ito.c.homeDomain){
-      multi.homeDomain = Ito.c.homeDomain;
+      multi.home_domain = Ito.c.homeDomain;
     }
 
     let iss = Ito.accounts.issuingInterim.loaded;

@@ -8,3 +8,4 @@ Multisig.masterAccount = 'issuingFinal';
 Multisig.signerAccount = 'issuingFinalSigner';
 
 Ito.completeTransaction(Multisig.buildTransaction, 'issuingFinal');
+// Ito.signToFile(Multisig.buildTransaction, 'issuingFinal', 'ifmultisig');

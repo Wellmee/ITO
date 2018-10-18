@@ -8,3 +8,4 @@ Multisig.masterAccount = 'issuingInterim';
 Multisig.signerAccount = 'issuingInterimSigner';
 
 Ito.completeTransaction(Multisig.buildTransaction, 'issuingInterim');
+// Ito.signToFile(Multisig.buildTransaction, 'issuingInterim', 'iimultisig');
