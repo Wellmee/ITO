@@ -1,7 +1,8 @@
 ## Plan
- * toml file and hosting
+ * home domain on the issuing account
+ * toml file and hosting: https://stellar.stackexchange.com/questions/645/how-is-an-asset-verified
  * time bounds + just sign with no submit
- * testovaci buyer that buys a few tokens
+ * test buyer that buys a few tokens
  * Implement listing payments, paying from an account - more like trades for an offer: https://www.stellar.org/developers/horizon/reference/endpoints/trades-for-offer.html
  * try 100 operations
 

@@ -9,6 +9,10 @@ test('issuing and distributing accounts have multisig set up', function() {
   // return the promise, expect 6 expects
   expect.assertions(6);
   return Ito.loadStuff().then(function() {
+    if (Ito.c.homeDomain){
+      multi.homeDomain = Ito.c.homeDomain;
+    }
+
     let iss = Ito.accounts.issuingInterim.loaded;
     expect(iss).toMatchObject(multi);
     expect(iss.signers).toHaveLength(2);

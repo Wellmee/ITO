@@ -7,7 +7,7 @@ const m = {};
 
 // change signers and weights
 m.buildTransaction = function(){
-  return new StellarSdk.TransactionBuilder(Ito.accounts[m.masterAccount].loaded)
+  let tb = new StellarSdk.TransactionBuilder(Ito.accounts[m.masterAccount].loaded)
     .addOperation(StellarSdk.Operation.setOptions({
       signer: {
         ed25519PublicKey: Ito.accounts[m.signerAccount].publicKey,
@@ -19,7 +19,17 @@ m.buildTransaction = function(){
       lowThreshold: 2, // 1??? - if 1, allow trust needs just one
       medThreshold: 2,
       highThreshold: 2
-    }))
+    }));
+  
+  // add home domain if defined
+  if (Ito.c.homeDomain){
+    tb = tb.addOperation(StellarSdk.Operation.setOptions({
+      homeDomain: Ito.c.homeDomain      
+    }));
+    
+  }
+    
+  return tb
     .addMemo(StellarSdk.Memo.text('setting multisig'))
     .build();
 }
