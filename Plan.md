@@ -1,12 +1,19 @@
 ## Plan
- * home domain on the issuing account
- * toml file and hosting: https://stellar.stackexchange.com/questions/645/how-is-an-asset-verified
- * time bounds + just sign with no submit
- * test buyer that buys a few tokens
+ * rict v testu, ze ma byt jenom jedna aktivni sell offer
+ * discount offer
+ * delete offer and create offer for the rest - offers can't be over what's available
+ * final tokens emit - auth required
  * Implement listing payments, paying from an account - more like trades for an offer: https://www.stellar.org/developers/horizon/reference/endpoints/trades-for-offer.html
  * try 100 operations
 
+## Session
+ * test buyer that buys a few tokens
+ * toml file and hosting: https://stellar.stackexchange.com/questions/645/how-is-an-asset-verified
+
 ## Done
+ * delete offer
+ * just sign with no submit
+ * home domain on the issuing account
  * sell offer
  * support second device
  * try something on public network
@@ -34,3 +41,4 @@
   * https://www.npmjs.com/package/@ledgerhq/hw-app-str .. official package
   * https://stellar.stackexchange.com/questions/912/how-to-add-a-signature-using-ledger-nano
  * odprasit, davat mezikroky do filu
+ * sere pes time bounds 

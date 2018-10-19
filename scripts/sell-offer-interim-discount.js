@@ -1,4 +1,4 @@
-// create a sell offer for the interim token
+// create a sell offer for the interim token for the discounted period
 const Ito = require('../src/ito.js');
 const StellarSdk = require('stellar-sdk');
 
@@ -13,9 +13,9 @@ m.buildTransaction = function(){
       ),
       buying: StellarSdk.Asset.native(),
       amount: Ito.c.interimToken.supply,
-      price: Ito.c.interimToken.priceInXlm
+      price: Ito.c.interimToken.discountPriceInXlm
     }))
-    .addMemo(StellarSdk.Memo.text('sell-offer'))
+    .addMemo(StellarSdk.Memo.text('sell-offer-discount'))
     .build();
 }
 
@@ -26,5 +26,5 @@ module.exports = m
 
 // if called directly, do it
 if (require.main === module) {
-  Ito.signToFile(m.buildTransaction, 'distributing', 'sell-offer');
+  Ito.signToFile(m.buildTransaction, 'distributing', 'sell-offer-discount');
 }

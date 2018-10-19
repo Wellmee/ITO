@@ -3,7 +3,7 @@ const Ito = require('../src/ito.js');
 const NUM_DIGITS = 5;
 
 test('distributing account is selling the interim tokens', function() {
-  expect.assertions(7);
+  expect.assertions(8);
   return Ito.loadStuff().then(async function() {
     let acc = Ito.accounts.distributing.loaded;
     
@@ -30,8 +30,8 @@ test('distributing account is selling the interim tokens', function() {
     // we're buying xlm
     expect(o.buying.asset_type).toBe('native');
     // the price is right
-    expect(parseFloat(o.price)).toBeCloseTo(parseFloat(Ito.c.interimToken.priceInXlm), NUM_DIGITS);
-    // amount is dependent on what we sell on discount
-    // expect(parseFloat(o.amount)).toBeCloseTo(parseFloat(Ito.c.interimToken.supply), NUM_DIGITS);
+    expect(parseFloat(o.price)).toBeCloseTo(parseFloat(Ito.c.interimToken.discountPriceInXlm), NUM_DIGITS);
+    // amount is right too
+    expect(parseFloat(o.amount)).toBeCloseTo(parseFloat(Ito.c.interimToken.supply), NUM_DIGITS);
   })
 });

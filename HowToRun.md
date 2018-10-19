@@ -25,23 +25,42 @@ node scripts/multisig-setup-issuing-final.js
 jest scripts/multisig-setup.test.js 
 2. Set revocable on interim tokens
 node scripts/set-issuing-interim-account-flags.js
-- sign: 
+- sign and submit: 
 node scripts/sign-and-submit.js transactions-to-sign/setting-flags.xdr issuingInterimSigner
 - test: 
 jest scripts/set-issuing-interim-account-flags.test.js
 3. Trustline from distributing to issuingInterim
 node scripts/add-trustline-interim.js
-- sign:
+- sign and submit:
 node scripts/sign-and-submit.js transactions-to-sign/adding-trustline.xdr distributingSigner
 4. Send tokens to distributing
 node scripts/send-interim-tokens.js 
-- sign:
+- sign and submit:
 node scripts/sign-and-submit.js transactions-to-sign/sending-interim-tokens.xdr issuingInterimSigner
 - test:
 jest scripts/send-interim-tokens.test.js
-5. Sell offer
-node scripts/sell-offer-interim.js 
-- sign:
-node scripts/sign-and-submit.js transactions-to-sign/sell-offer.xdr distributingSigner
+5. Sell offer discount
+node scripts/sell-offer-interim-discount.js 
+- sign - no submitting:
+node scripts/sign.js transactions-to-sign/sell-offer-discount.xdr distributingSigner signed-sell-order-discount
+
+6. When the ICO period starts, submit the transaction - discount
+- submit:
+node scripts/sign-and-submit.js transactions/signed-sell-order-discount.xdr
 - test:
-jest scripts/sell-offer-interim.test.js 
+jest scripts/sell-offer-interim-discount.test.js 
+
+7. When the discount period is over, in one transaction delete the discount sell offer and create a sell offer for the rest
+node 
+- sign and submit:
+
+
+Ops:
+delete an offer:
+get the id from scripts/account-info.js distributing
+node scripts/delete-sell-offer.js 11940
+node scripts/sign-and-submit.js transactions-to-sign/delete-sell-offer.xdr distributingSigner
+
+
+
+

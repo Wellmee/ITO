@@ -3,6 +3,10 @@
  * ITO_CONFIG .. name of the config file 
  * 
  * methods:
+ * completeTransaction(buildTransaction function, signer): does the complete transaction lifecycle - build, sign, submit, buildTransaction is a callback defined by the caller that builds and returns the transaction. Just one signer supported
+ * signToFile(buildTransaction function, signer, name from which the fileName will be generated): does first two steps in transaction lifecycle: build, sign. Then it writes the transaction xdr to a file
+ * signAndSubmit(fileName, signer): does the second two steps in transaction lifecycle: sign, submit. The built transaction is taken from a file.
+ * sign(fileName, signers): takes transaction from a file, signs it and writes the xdr to another file.
  * async loadStuff(): load whatever is needed from config
  * async sign(transaction, list of signing accounts) must be called after loadStuff() is finished
  * logSuccess(result)
@@ -54,11 +58,11 @@ ito.completeTransaction = function(buildTransaction, signer){
   });
 }
 
-ito.signToFile = function(buildTransaction, signer, name){
+ito.signToFile = function(buildTransaction, signer, name, loadOffers){
   var transaction;
   var fileName = `transactions-to-sign/${name}.xdr`
   // load what's needed
-  ito.loadStuff(signer).then(function() {
+  ito.loadStuff(signer, loadOffers).then(function() {
     // build the transaction
     transaction = buildTransaction();
 
@@ -101,7 +105,7 @@ ito.signAndSubmit = function(fileName, signer){
   });
 }
 
-ito.loadStuff = async function(accountToLoad) {
+ito.loadStuff = async function(accountToLoad, loadOffers) {
   // config file
   const configFile = process.env.ITO_CONFIG ? `./config/${process.env.ITO_CONFIG}.json` : './config/config.json'
   const c = JSON.parse(fs.readFileSync(configFile, 'utf8'));
@@ -163,10 +167,20 @@ ito.loadStuff = async function(accountToLoad) {
     // load it
     ito.accounts[a].loaded = await ito.server.loadAccount(ito.accounts[a].publicKey);
 
+    // load offers if it should be done
+    if (loadOffers && a == accountToLoad){
+      ito.accounts[a].offers = await ito.server.offers('accounts', ito.accounts[a].publicKey).call();
+    }
+
   };
 }
 
-ito.sign = async function(transaction, signingAccounts) {
+ito.sign = async function(transaction, signingAccounts, outputName) {
+  // if transaction is a filename, read it
+  if (typeof transaction === 'string' || transaction instanceof String){
+    transaction = ito.transactionFromFile(transaction);
+  }
+  // if single signer, put it into an array
   if (! Array.isArray(signingAccounts)){
     signingAccounts = [signingAccounts];
   }
@@ -191,7 +205,13 @@ ito.sign = async function(transaction, signingAccounts) {
       await ledgerWallet.sign(transaction);
     }
     // write signed xdr to a file
-    ito.transactionToFile(transaction, `./transactions/${fileId}-${a.accountName}-signed.xdr`);
+    let name = outputName ? outputName : `${fileId}-${a.accountName}-signed`;
+    let outputFileName = `./transactions/${name}.xdr`;
+    ito.transactionToFile(transaction, outputFileName);
+    // if they asked for it, inform
+    if (outputName){
+      console.log(`Transaction written to ${outputFileName}`);
+    }
   }
 }
 
