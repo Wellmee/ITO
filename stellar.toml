@@ -1,0 +1,51 @@
+# ----- Wellmee Stellar Anchor <wellmee.com> -----
+ACCOUNTS=[
+"GB3DSYV5MC25XVFBCQVZEX2ASOMHZV6Y37AISHCV7TXHQJB6JZM3TSUS",
+"GDVWV7EHFQ5ZMSWP6G5Y4N5IKXXXXHHK5AJYW4HIA56KLZN5XL3PHZN2",
+"GABHGAIFYPKVBSHTPT27T3TA6YXRKCEC6Y7EU37GDS5QJM6HE2CDPAWR"
+]
+OUR_VALIDATORS=[
+"GCSQGXLZIUTE3EFJSLVZ2IKLUYCSIT3643AFQ7A7B4ZCT4FHJ7CFAA3F",
+"GBIQ3BJWFZOXVWPO5SCZAYVDFG4VMSCU7GPWMCHMKC2B2F5XM5762HCS",
+"GCC7C6NYZ4PZEOCS5MFVJKT7BYCTIUW3JUYFRXLJ7BUDB4KGPHSPGSVR"
+]
+
+[DOCUMENTATION]
+ORG_NAME="Well Balance s.r.o."
+ORG_DBA="Wellmee"
+ORG_URL="https://wellmee.com"
+ORG_LOGO="https://wellmee.com/wp-content/uploads/2018/10/Wellmee-100x100.jpg"
+ORG_DESCRIPTION="Wellmee brings a mobile application – built on AI and machine learning - to help people live their lives better."
+ORG_PHYSICAL_ADDRESS="Korunni 2569/108,Prague,Czech Republic"
+ORG_PHONE_NUMBER="+420 728 605 240"
+ORG_TWITTER="wellmeeapp"
+ORG_GITHUB="wellmee"
+ORG_OFFICIAL_EMAIL="info@wellmee.com"
+ORG_LICENSING_AUTHORITY="Prague Municipal court"
+ORG_LICENSE_TYPE="Production, business and service not stated in attachments 1 to 3"
+ORG_LICENSE_NUMBER="C294078"
+
+[[PRINCIPALS]]
+name="Milan Vlcek"
+email="milan@wellmee.com"
+twitter="milan_vlcek"
+[[PRINCIPALS]]
+name="Petr Cvengros"
+github="cvengros"
+
+[[CURRENCIES]]
+code="WLME"
+issuer="GDVWV7EHFQ5ZMSWP6G5Y4N5IKXXXXHHK5AJYW4HIA56KLZN5XL3PHZN2"
+display_decimals=2
+name="Wellmee Token"
+desc="The Wellmee token."
+image="https://wellmee.com/wp-content/uploads/2018/10/Wellmee-100x100.jpg"
+redemption_instructions="Enhanced KYC verification through Wellmee is required to redeem this asset"
+[[CURRENCIES]]
+code="WLMI"
+issuer="GB3DSYV5MC25XVFBCQVZEX2ASOMHZV6Y37AISHCV7TXHQJB6JZM3TSUS"
+display_decimals=2
+name="Wellmee Interim Token"
+desc="The Wellmee interim token"
+image="https://wellmee.com/wp-content/uploads/2018/10/Wellmee-100x100.jpg"
+redemption_instructions="Enhanced KYC verification through Wellmee is required to redeem this asset"
