@@ -146,6 +146,10 @@ ito.loadStuff = async function(accountToLoad, loadOffers) {
         // connect
         await ledgerWallet.connect(accNum);
         publicKey = ledgerWallet.publicKey;
+
+        if (publicKey != ledgerPublicKeys[ito.c.accounts[a]]){
+          throw `Probably wrong ledger connected. The connected one has ${a} public key ${publicKey}, expected ${ledgerPublicKeys[ito.c.accounts[a]]}\nPlease quit the ledger app`
+        }
       } else {
         // just get the publicKey from the file
         publicKey = ledgerPublicKeys[ito.c.accounts[a]];
