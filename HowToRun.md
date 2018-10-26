@@ -34,11 +34,11 @@ node scripts/add-trustline-interim.js
 - sign and submit:
 node scripts/sign-and-submit.js transactions-to-sign/adding-trustline.xdr distributingSigner
 4. Send tokens to distributing
-node scripts/send-interim-tokens.js 
+node scripts/generate-interim-tokens.js 
 - sign and submit:
-node scripts/sign-and-submit.js transactions-to-sign/sending-interim-tokens.xdr issuingInterimSigner
+node scripts/sign-and-submit.js transactions-to-sign/generate-interim-tokens.xdr issuingInterimSigner
 - test:
-jest scripts/send-interim-tokens.test.js
+jest scripts/generate-interim-tokens.test.js
 5. Sell offer discount
 node scripts/sell-offer-interim-discount.js 
 - sign - no submitting:

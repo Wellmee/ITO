@@ -1,5 +1,8 @@
 ## Plan
+ * udelat poradne to posilani tokenu - load account zjistit ze to existuje a taky ze ma trustline
+ * assert - kdyz je blbe loadovanej public key vs. to co je v ledger-public-keys
  * rict v testu, ze ma byt jenom jedna aktivni sell offer
+ * poresit pozadavky na stellarX
  * discount offer
  * delete offer and create offer for the rest - offers can't be over what's available
  * final tokens emit - auth required

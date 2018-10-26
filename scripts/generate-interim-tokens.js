@@ -4,23 +4,15 @@ const StellarSdk = require('stellar-sdk');
 
 const m = {};
 
-// params: destination, amount
-const destination = process.argv[2];
-const amount = process.argv[3];
-
-if ((!destination) || (!amount)){
-  throw "missing params!"
-}
-
 // change signers and weights
 m.buildTransaction = function(){
-  return new StellarSdk.TransactionBuilder(Ito.accounts.distributing.loaded)
+  return new StellarSdk.TransactionBuilder(Ito.accounts.issuingInterim.loaded)
     .addOperation(StellarSdk.Operation.payment({
-      destination: destination,
+      destination: Ito.accounts.distributing.loaded.accountId(),
       asset: new StellarSdk.Asset(Ito.c.interimToken.code, Ito.accounts.issuingInterim.loaded.accountId()),
-      amount: amount
+      amount: Ito.c.interimToken.supply
     }))
-    .addMemo(StellarSdk.Memo.text('sending WLMI tokens'))
+    .addMemo(StellarSdk.Memo.text('generating interim tokens'))
     .build();
 }
 
@@ -31,5 +23,5 @@ module.exports = m
 
 // if called directly, do it
 if (require.main === module) {
-  Ito.signToFile(m.buildTransaction, 'distributing', 'sending-interim-tokens');
+  Ito.signToFile(m.buildTransaction, 'issuingInterim', 'generate-interim-tokens');
 }
