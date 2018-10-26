@@ -107,9 +107,12 @@ ito.signAndSubmit = function(fileName, signer){
 
 ito.loadStuff = async function(accountToLoad, loadOffers) {
   // config file
-  const configFile = process.env.ITO_CONFIG ? `./config/${process.env.ITO_CONFIG}.json` : './config/config.json'
+  const configFile = process.env.ITO_CONFIG ? `./config/${process.env.ITO_CONFIG}.json` : './config/config.json';
   const c = JSON.parse(fs.readFileSync(configFile, 'utf8'));
-  const ledgerPublicKeys = JSON.parse(fs.readFileSync('./config/ledger-public-keys.json', 'utf8'));
+
+  // public keys for ledger, if available
+  const keysFile = c.ledgerKeys ? `./config/${c.ledgerKeys}.json` : null;
+  const ledgerPublicKeys = keysFile ? JSON.parse(fs.readFileSync(keysFile, 'utf8')) : null;
   
   ito.c = c;
 
@@ -194,6 +197,10 @@ ito.sign = async function(transaction, signingAccounts, outputName) {
     let a = signingAccounts[i];
     if (typeof a === 'string' || a instanceof String){
       a = ito.accounts[a]
+    }
+
+    if (!a){
+      throw `${signingAccounts[i]} missing from the config accounts`; 
     }
 
     if (a.accountType == 'file'){
