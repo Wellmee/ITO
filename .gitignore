@@ -6,3 +6,4 @@ config
 transactions
 transactions-to-sign
 stuff.js
+Plan.md
