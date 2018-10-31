@@ -57,17 +57,29 @@ ito.completeTransaction = function(buildTransaction, signer){
     ito.logError(error);
   });
 }
+// options:
+// buildTransaction
+// signer
+// name
+// loadOffers
+// checkAccount
+ito.signToFile = function(opts){
 
-ito.signToFile = function(buildTransaction, signer, name, loadOffers){
-  var transaction;
-  var fileName = `transactions-to-sign/${name}.xdr`
+  let transaction;
+  let fileName = `transactions-to-sign/${opts.name}.xdr`
+
   // load what's needed
-  ito.loadStuff(signer, loadOffers).then(function() {
+  ito.loadStuff(opts.signer, opts.loadOffers).then(async function() {
+    // check an account if function provided
+    if (opts.checkAccount){
+      await opts.checkAccount();
+    }
+
     // build the transaction
-    transaction = buildTransaction();
+    transaction = opts.buildTransaction();
 
     // sign it
-    return ito.sign(transaction, signer);
+    return ito.sign(transaction, opts.signer);
   })
   .then(function() {
     // write it to a file
@@ -80,6 +92,18 @@ ito.signToFile = function(buildTransaction, signer, name, loadOffers){
   .catch(function(error) {
     ito.logError(error);
   });
+}
+
+ito.checkTrustline = async function(accountId, tokenCode, issuingAccountId){
+
+  // get the account from the server
+  let acc = await ito.server.loadAccount(accountId);
+
+  // check if it has a trustline
+  let b = acc.balances.find(x => x.asset_code == tokenCode && x.asset_issuer == issuingAccountId);
+  if (!b) {
+    throw `The account is missing trustline to ${tokenCode} issued by ${issuingAccountId}`;
+  }
 }
 
 ito.signAndSubmit = function(fileName, signer){

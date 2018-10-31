@@ -23,5 +23,9 @@ module.exports = m
 
 // if called directly, do it
 if (require.main === module) {
-  Ito.signToFile(m.buildTransaction, 'issuingInterim', 'generate-interim-tokens');
+  Ito.signToFile({
+    buildTransaction: m.buildTransaction,
+    signer: 'issuingInterim',
+    name: 'generate-interim-tokens'
+  });
 }

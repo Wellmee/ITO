@@ -8,4 +8,3 @@ Multisig.masterAccount = 'distributing';
 Multisig.signerAccount = 'distributingSigner';
 
 Ito.completeTransaction(Multisig.buildTransaction, 'distributing');
-// Ito.signToFile(Multisig.buildTransaction, 'distributing', 'dmultisig');

@@ -26,5 +26,9 @@ module.exports = m
 
 // if called directly, do it
 if (require.main === module) {
-  Ito.signToFile(m.buildTransaction, 'distributing', 'sell-offer-discount');
+  Ito.signToFile({
+    buildTransaction: m.buildTransaction,
+    signer: 'distributing',
+    name: 'sell-offer-discount'
+  });
 }
