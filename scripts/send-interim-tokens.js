@@ -1,11 +1,10 @@
 // send interim tokens from issuing to distributing
 const Ito = require('../src/ito.js');
 const StellarSdk = require('stellar-sdk');
-// const Big = require('big.js');
 
 const m = {};
 
-// params: destination, amount
+// params: destination, amount [offset]
 const destination = process.argv[2];
 const amount = process.argv[3];
 let offset = process.argv[4];
@@ -16,14 +15,8 @@ if ((!destination) || (!amount)){
 
 // payment in interim tokens
 m.buildTransaction = function(){
-  let account = Ito.accounts.distributing.loaded;
-  // if there's an offset increment the account sequence number
-  if (offset){
-    offset = parseInt(offset);
-    for (var i = 0; i < offset; i++) {
-      account.incrementSequenceNumber();
-    }
-  }
+  // apply offset
+  let account = Ito.offsetSequenceNumber(Ito.accounts.distributing.loaded, offset);
 
   return new StellarSdk.TransactionBuilder(account)
     .addOperation(StellarSdk.Operation.payment({

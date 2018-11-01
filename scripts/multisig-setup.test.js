@@ -25,4 +25,4 @@ test('issuing and distributing accounts have multisig set up', function() {
     expect(dis).toMatchObject(multi);
     expect(dis.signers).toHaveLength(2);
   })
-});
+}, Ito.TEST_TIMEOUT);

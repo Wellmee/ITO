@@ -23,7 +23,7 @@ node scripts/multisig-setup-issuing-interim.js
 node scripts/multisig-setup-issuing-final.js
 - test: 
 jest scripts/multisig-setup.test.js 
-2. Set revocable on interim tokens
+2. Set revocable and required on interim tokens
 node scripts/set-issuing-interim-account-flags.js
 - sign and submit: 
 node scripts/sign-and-submit.js transactions-to-sign/setting-flags.xdr issuingInterimSigner
@@ -39,6 +39,17 @@ node scripts/generate-interim-tokens.js
 node scripts/sign-and-submit.js transactions-to-sign/generate-interim-tokens.xdr issuingInterimSigner
 - test:
 jest scripts/generate-interim-tokens.test.js
+
+Set auth required account flag
+
+Ops:
+delete an offer:
+get the id from scripts/account-info.js distributing
+node scripts/delete-sell-offer.js 11940
+node scripts/sign-and-submit.js transactions-to-sign/delete-sell-offer.xdr distributingSigner
+
+
+Sell offer (abandoned):
 5. Sell offer discount
 node scripts/sell-offer-interim-discount.js 
 - sign - no submitting:
@@ -53,14 +64,3 @@ jest scripts/sell-offer-interim-discount.test.js
 7. When the discount period is over, in one transaction delete the discount sell offer and create a sell offer for the rest
 node 
 - sign and submit:
-
-
-Ops:
-delete an offer:
-get the id from scripts/account-info.js distributing
-node scripts/delete-sell-offer.js 11940
-node scripts/sign-and-submit.js transactions-to-sign/delete-sell-offer.xdr distributingSigner
-
-
-
-

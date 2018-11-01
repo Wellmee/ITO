@@ -30,6 +30,8 @@ const ledgerWallet = require('stellar-ledger-wallet');
 
 ito.hasLedger = false;
 
+ito.TEST_TIMEOUT = 15000;
+
 /**
  * Methods
  */
@@ -186,8 +188,7 @@ ito.loadStuff = async function(accountToLoad, loadOffers) {
       }
     } else {   
       // file - take stuff from the config and add a few things
-      let accountFile = `./test-accounts/${ito.c.accounts[a]}.json`;
-      ito.accounts[a] = JSON.parse(fs.readFileSync(accountFile, 'utf8'));
+      ito.accounts[a] = ito.getAccountFromFile(ito.c.accounts[a]);
       Object.assign(ito.accounts[a], {
         accountType: 'file',
         accountName: a,
@@ -204,6 +205,24 @@ ito.loadStuff = async function(accountToLoad, loadOffers) {
     }
 
   };
+}
+
+ito.getAccountFromFile = function(accountName){
+  let accountFile = `./test-accounts/${accountName}.json`;
+  return JSON.parse(fs.readFileSync(accountFile, 'utf8'));
+}
+
+// increment account sequence number according to the offset
+// if offset empty, just return the account
+ito.offsetSequenceNumber = function(account, offset){
+  // if there's an offset increment the account sequence number
+  if (offset){
+    offset = parseInt(offset);
+    for (var i = 0; i < offset; i++) {
+      account.incrementSequenceNumber();
+    }
+  }
+  return account;
 }
 
 ito.sign = async function(transaction, signingAccounts, outputName) {

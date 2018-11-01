@@ -34,4 +34,4 @@ test('distributing account is selling the interim tokens', function() {
     // amount is right too
     expect(parseFloat(o.amount)).toBeCloseTo(parseFloat(Ito.c.interimToken.supply), NUM_DIGITS);
   })
-});
+}, Ito.TEST_TIMEOUT);

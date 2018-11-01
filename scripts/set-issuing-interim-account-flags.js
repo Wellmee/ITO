@@ -10,6 +10,9 @@ m.buildTransaction = function(){
     .addOperation(StellarSdk.Operation.setOptions({
       setFlags: StellarSdk.AuthRevocableFlag
     }))
+    .addOperation(StellarSdk.Operation.setOptions({
+      setFlags: StellarSdk.AuthRequiredFlag
+    }))
     .addMemo(StellarSdk.Memo.text('set issuing acc flags'))
     .build();
 }
