@@ -5,9 +5,10 @@ const StellarSdk = require('stellar-sdk');
 
 const m = {};
 
-// params: trustor, [offset]
+// params: trustor, [offset], [authorize] - if given, deauthorizes
 const trustor = process.argv[2];
 let offset = process.argv[3];
+let shouldAuthorize = process.argv[4] ? false : true;
 
 if (!trustor){
   throw "missing param!"
@@ -20,7 +21,7 @@ m.buildTransaction = function(){
     .addOperation(StellarSdk.Operation.allowTrust({
       trustor: trustor,
       assetCode: Ito.c.interimToken.code, 
-      authorize: true
+      authorize: shouldAuthorize
     }))
     .addMemo(StellarSdk.Memo.text('allowing trustline'))
     .build();
