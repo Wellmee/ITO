@@ -209,6 +209,9 @@ ito.loadStuff = async function(accountToLoad, loadOffers) {
 
 ito.getAccountFromFile = function(accountName){
   let accountFile = `./test-accounts/${accountName}.json`;
+  if (! fs.existsSync(accountFile)) {
+    return null;
+  }
   return JSON.parse(fs.readFileSync(accountFile, 'utf8'));
 }
 

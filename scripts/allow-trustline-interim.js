@@ -14,6 +14,14 @@ if (!trustor){
   throw "missing param!"
 }
 
+// check if file has been passed
+// const fs = require('fs');
+// if (fs.existsSync(trustor)) {
+//   // read the file into a list of addresses
+// } else {
+//   // put it into an array
+// }
+
 m.buildTransaction = function(){
   // apply offset
   let account = Ito.offsetSequenceNumber(Ito.accounts.issuingInterim.loaded, offset);

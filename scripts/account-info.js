@@ -8,8 +8,9 @@ Ito.loadStuff().then(async function() {
   if (Ito.accounts[accountName]){
     acc = Ito.accounts[accountName].loaded;
   } else {
-    // get it from a file
-    let key = Ito.getAccountFromFile(accountName).publicKey;
+    // get it from a file or directly from the param
+    let fileAccount = Ito.getAccountFromFile(accountName);
+    let key = fileAccount ? fileAccount.publicKey : accountName;
     acc = await Ito.server.loadAccount(key);
   }
   let offers = await Ito.server.offers('accounts', acc.accountId()).call();

@@ -4,7 +4,7 @@ const StellarSdk = require('stellar-sdk');
 
 const m = {};
 
-// params: destination, amount [offset]
+// params: destination, amount, [offset]
 const destination = process.argv[2];
 const amount = process.argv[3];
 let offset = process.argv[4];
