@@ -37,7 +37,9 @@ m.buildTransaction = function(){
 
 // check that the account exists and has the trustline
 m.checkAccount = async function(){
-  await Ito.checkTrustline(trustor, Ito.c.interimToken.code, Ito.accounts.issuingInterim.publicKey);
+  for (var i = 0; i < trustorList.length; i++) {
+    await Ito.checkTrustline(trustorList[i].address, Ito.c.interimToken.code, Ito.accounts.issuingInterim.publicKey);
+  }
 }
 
 /**
@@ -50,6 +52,7 @@ if (require.main === module) {
   Ito.signToFile({
     buildTransaction: m.buildTransaction, 
     signer: 'issuingInterim', 
-    name: 'allowing-trustline'
+    name: 'allowing-trustline',
+    checkAccount: m.checkAccount
   });
 }

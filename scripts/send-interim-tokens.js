@@ -1,16 +1,30 @@
 // send interim tokens from issuing to distributing
 const Ito = require('../src/ito.js');
 const StellarSdk = require('stellar-sdk');
-
+const fs = require('fs');
 const m = {};
 
+// an example on how not to do a script param interface
 // params: destination, amount, [offset]
+// or: destination.json, [offset]
 const destination = process.argv[2];
-const amount = process.argv[3];
-let offset = process.argv[4];
+if (!destination){
+  throw "missing params destination!"
+}
 
-if ((!destination) || (!amount)){
-  throw "missing params!"
+let destinationList = Ito.getAccountList(destination);
+let offset;
+
+if (fs.existsSync(destination)){
+  // destination is a file, it's read already, so just use offset
+  offset = process.argv[3];
+} else {
+  // destination is an address, so get amount and offset from params
+  if (!amount){
+    throw "missing params: amount!"
+  }
+  destinationList[0].amount = process.argv[3];
+  offset = process.argv[4];
 }
 
 // payment in interim tokens
@@ -18,19 +32,27 @@ m.buildTransaction = function(){
   // apply offset
   let account = Ito.offsetSequenceNumber(Ito.accounts.distributing.loaded, offset);
 
-  return new StellarSdk.TransactionBuilder(account)
-    .addOperation(StellarSdk.Operation.payment({
-      destination: destination,
+  // add each destination as a payment operation
+  let builder = new StellarSdk.TransactionBuilder(account);
+  for (var i = 0; i < destinationList.length; i++) {
+    let d = destinationList[i];
+    builder.addOperation(StellarSdk.Operation.payment({
+      destination: d.address,
       asset: new StellarSdk.Asset(Ito.c.interimToken.code, Ito.accounts.issuingInterim.loaded.accountId()),
-      amount: amount
+      amount: d.amount
     }))
+  }
+
+  return builder
     .addMemo(StellarSdk.Memo.text('sending WLMI tokens'))
     .build();
 }
 
-// check that the account exists and has the trustline
+// check that each account exists and has the trustline
 m.checkAccount = async function(){
-  await Ito.checkTrustline(destination, Ito.c.interimToken.code, Ito.accounts.issuingInterim.publicKey);
+  for (var i = 0; i < destinationList.length; i++) {
+    await Ito.checkTrustline(destinationList[i].address, Ito.c.interimToken.code, Ito.accounts.issuingInterim.publicKey);
+  }
 }
 
 /**
