@@ -215,6 +215,18 @@ ito.getAccountFromFile = function(accountName){
   return JSON.parse(fs.readFileSync(accountFile, 'utf8'));
 }
 
+ito.getAccountList = function(fileOrKey){
+  // check if file has been passed
+  if (fs.existsSync(fileOrKey)) {
+    // read the file into a list of addresses
+    let records = JSON.parse(fs.readFileSync(fileOrKey, 'utf8'));;
+    return records.records;
+  } else {
+    // put it into an array
+    return [{"address": fileOrKey}];
+  }
+}
+
 // increment account sequence number according to the offset
 // if offset empty, just return the account
 ito.offsetSequenceNumber = function(account, offset){

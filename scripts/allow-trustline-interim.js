@@ -14,23 +14,23 @@ if (!trustor){
   throw "missing param!"
 }
 
-// check if file has been passed
-// const fs = require('fs');
-// if (fs.existsSync(trustor)) {
-//   // read the file into a list of addresses
-// } else {
-//   // put it into an array
-// }
+let trustorList = Ito.getAccountList(trustor);
 
 m.buildTransaction = function(){
   // apply offset
   let account = Ito.offsetSequenceNumber(Ito.accounts.issuingInterim.loaded, offset);
-  return new StellarSdk.TransactionBuilder(account)
-    .addOperation(StellarSdk.Operation.allowTrust({
-      trustor: trustor,
+  let builder = new StellarSdk.TransactionBuilder(account);
+
+  // for each trustor add an operation
+  for (var i = 0; i < trustorList.length; i++) {
+    let t = trustorList[i];
+    builder.addOperation(StellarSdk.Operation.allowTrust({
+      trustor: t.address,
       assetCode: Ito.c.interimToken.code, 
       authorize: shouldAuthorize
-    }))
+    }));
+  }
+  return builder
     .addMemo(StellarSdk.Memo.text('allowing trustline'))
     .build();
 }
