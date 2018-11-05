@@ -20,7 +20,7 @@ if (fs.existsSync(destination)){
   offset = process.argv[3];
 } else {
   // destination is an address, so get amount and offset from params
-  if (!amount){
+  if (!process.argv[3]){
     throw "missing params: amount!"
   }
   destinationList[0].amount = process.argv[3];

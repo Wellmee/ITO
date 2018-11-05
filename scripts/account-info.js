@@ -14,10 +14,15 @@ Ito.loadStuff().then(async function() {
     acc = await Ito.server.loadAccount(key);
   }
   let offers = await Ito.server.offers('accounts', acc.accountId()).call();
+  let payments = await Ito.server.payments()
+    .forAccount(acc.accountId())
+    .limit(200)
+    .call();
 
 // pry = require('pryjs'); eval(pry.it);
 
   console.log(acc);
   console.log(offers);
+  console.log(payments);
 
 })
